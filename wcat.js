@@ -2,7 +2,6 @@ let fs = require("fs");
 let inputArr = process.argv.slice(2);
 //console.log(inputArr);
 
-
 let optionsArr = [];
 let filesArr = [];
 for (let i = 0; i < inputArr.length; i++) {
@@ -21,6 +20,7 @@ for (let i = 0; i < filesArr.length; i++) {
         return;
     }
 }
+
 let content = "";
 for (let i = 0; i < filesArr.length; i++) {
     content = content + fs.readFileSync(filesArr[i]) + "\r\n";
@@ -48,21 +48,32 @@ if (isSPreset == true) {
     }
     contentArr = tempArr; 
 }
-
 // console.log(contentArr.join("\n"));
 
-//-n
+// if both -n and -b are present
+let BothPresent = optionsArr.includes("-b") && optionsArr.includes("-n");
+if (BothPresent==true) {
+    console.log("Either enter -n or -b option");
+    return;
+}
 let isNPresent = optionsArr.includes("-n");
 if (isNPresent == true) {
+    modifyContentByN(contentArr);
+}
+// console.log(contentArr.join("\n"));
+
+let isBPresent = optionsArr.includes("-b");
+if (isBPresent == true) {
+    modifyContentByB(contentArr);       
+}
+console.log(contentArr.join("\n"));  
+
+function  modifyContentByN(contentArr){
     for (let i = 0; i < contentArr.length; i++) {
         contentArr[i] = (i + 1) + " " + (contentArr[i]) ;
     }
 }
-// console.log(contentArr.join("\n"));
-//-b
-let isBPresent = optionsArr.includes("-b");
-if (isBPresent == true) {
-
+function  modifyContentByB(contentArr){
     let count = 1
     for (let i = 0; i < contentArr.length; i++) {
         if (contentArr[i] != "") {
@@ -71,5 +82,5 @@ if (isBPresent == true) {
         }
     }
 }
-console.log(contentArr.join("\n"));  
+
 
